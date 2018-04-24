@@ -4,7 +4,7 @@ using std::string;
 using std::stringstream;
 #include "headers/ComplexShapes.h"
 
-string ComplexShape::getPostscript() {
+string ComplexShape::outputPostScript() {
     stringstream ss;
     for (auto shape : shapes )
         ss << shape->finalize() << " ";
@@ -24,3 +24,18 @@ string Scaled::getPostscript(){
     ss << getFX() << " " << getFY() << " scale " << shape->getPostscript();
     return ss.str();
 }
+
+void Layered::setHeightWidth(vector<shared_ptr<Shape>> shapes) {
+    for (auto shape : shapes) {
+        if (getHeight() < shape->getWidth())
+            setHeight(shape->getHeight());
+        if (getWidth() < shape->getWidth())
+            setWidth(shape->getWidth());
+    }
+};
+
+void Layered::setCoordinates(vector<shared_ptr<Shape>> shapes) {
+    auto startShape = shapes[0];
+    for (auto shape : shapes )
+        shape->setCursor(startShape->getLocX(), startShape->getLocY());
+};

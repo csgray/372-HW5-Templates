@@ -12,10 +12,27 @@ using std::initializer_list;
 #include "Shape.h"
 
 class ComplexShape : public Shape {
+private:
+    void virtual setHeightWidth(vector<shared_ptr<Shape>>) = 0;
+    void virtual setCoordinates(vector<shared_ptr<Shape>>) = 0;
+    string outputPostScript();
+
 protected:
     vector<shared_ptr<Shape>> shapes;
+
 public:
-    string getPostscript() override final;
+    ComplexShape(initializer_list<shared_ptr<Shape>> list) {
+    for (auto shape : list)
+        shapes.push_back(shape);
+    }
+
+    string getPostScript() {
+        setHeightWidth(shapes);
+        setCoordinates(shapes);
+        string postScript = outputPostScript();
+        return postScript;
+    }
+
 };
 
 class Rotation {
@@ -78,25 +95,9 @@ public:
 };
 
 class Layered : public ComplexShape {
-public:
-    Layered(initializer_list<shared_ptr<Shape>> list) {
-         // Populate vector
-        for (auto shape : list)
-            shapes.push_back(shape);
-
-        auto startShape = shapes[0];
-        
-        for (auto shape: shapes) {
-            if (getHeight() < shape->getWidth()) {
-                setHeight(shape->getHeight());
-            }
-            if (getWidth() < shape->getWidth()){
-                setWidth(shape->getWidth());
-            }
-
-            shape->setCursor(startShape->getLocX(), startShape->getLocY());
-        }
-    }
+private:
+    void setHeightWidth(vector<shared_ptr<Shape>> shapes) override;
+    void setCoordinates(vector<shared_ptr<Shape>> shapes) override;
 };
 
 class VerticalShape : public ComplexShape {
