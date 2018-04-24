@@ -11,21 +11,24 @@ using std::initializer_list;
 
 #include "Shape.h"
 
+class ComplexShape : public Shape {
+protected:
+    vector<shared_ptr<Shape>> shapes;
+public:
+    string getPostscript() override final;
+};
 
-class Rotation{
+class Rotation {
 private:
     int angle;
 public:
-    Rotation(int a){
-        if(a == 90 || a == 180 || a == 270){
+    Rotation(int a) {
+        if (a == 90 || a == 180 || a == 270)
             angle = a;
-        }
         else
-        {
             angle = 0;
-        }
     }
-    int getAngle(){
+    int getAngle() {
         return angle;
     };
 };
@@ -36,7 +39,7 @@ private:
     shared_ptr<Shape> shape;
 
 public:
-    Rotated(shared_ptr<Shape> s,Rotation a) : shape(s){
+    Rotated(shared_ptr<Shape> s, Rotation a) : shape(s) {
         angle = a.getAngle();
         if(angle == 90 || angle == 270){
             setWidth(s->getHeight());
@@ -74,11 +77,7 @@ public:
     }
 };
 
-class Layered : public Shape{
-private:
-  
-    vector<shared_ptr<Shape>> shapes;
-
+class Layered : public ComplexShape {
 public:
     Layered(initializer_list<shared_ptr<Shape>> list) {
          // Populate vector
@@ -96,17 +95,11 @@ public:
             }
 
             shape->setCursor(startShape->getLocX(), startShape->getLocY());
-            
         }
     }
-    
-    string getPostscript() override;
 };
 
-class VerticalShape : public Shape{
-private:
-    vector<shared_ptr<Shape>> shapes;
-
+class VerticalShape : public ComplexShape {
 public:
     VerticalShape(initializer_list<shared_ptr<Shape>> list) {
         // Populate vector
@@ -127,14 +120,9 @@ public:
             shape->setCursor( prevShape->getLocX() , (prevShape->getLocY() + ((prevShape->getHeight())/2) + (shape->getHeight()/2) ) );
         };
     }
-
-    string getPostscript() override;
 };
 
-class HorizontalShape : public Shape{
-private:
-    vector<shared_ptr<Shape>> shapes;
-
+class HorizontalShape : public ComplexShape {
 public:
     HorizontalShape(initializer_list<shared_ptr<Shape>> list) {
         // Populate vector
@@ -155,8 +143,6 @@ public:
             shape->setCursor( (prevShape->getLocX() + ((prevShape->getWidth())/2) + (shape->getWidth()/2) ), prevShape->getLocY() );
         };
     }
-
-    string getPostscript() override;
 };
 
 #endif

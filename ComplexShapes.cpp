@@ -4,6 +4,15 @@ using std::string;
 using std::stringstream;
 #include "headers/ComplexShapes.h"
 
+string ComplexShape::getPostscript() {
+    stringstream ss;
+    for (auto shape : shapes )
+        ss << shape->finalize() << " ";
+    string ps = ss.str();
+    ps.pop_back(); // Delete the last space!
+    return ps;
+}
+
 string Rotated::getPostscript(){
     stringstream ss;
     ss << angle << " rotate " << shape->getPostscript();
@@ -12,33 +21,6 @@ string Rotated::getPostscript(){
 
 string Scaled::getPostscript(){
     stringstream ss;
-    ss << getFX() << " " << getFY() << " scale " <<shape->getPostscript();
+    ss << getFX() << " " << getFY() << " scale " << shape->getPostscript();
     return ss.str();
-}
-
-string Layered::getPostscript() {
-    stringstream ss;
-    for (auto shape : shapes )
-        ss << shape->finalize() << " ";
-    string ps = ss.str();
-    ps.pop_back(); // Delete the last space!
-    return ps;
-}
-
-string VerticalShape::getPostscript() {
-    stringstream ss;
-    for (auto shape : shapes )
-        ss << shape->finalize() << " ";
-    string ps = ss.str();
-    ps.pop_back(); // Delete the last space!
-    return ps;
-}
-
-string HorizontalShape::getPostscript() {
-    stringstream ss;
-    for (auto shape : shapes )
-        ss << shape->finalize() << " ";
-    string ps = ss.str();
-    ps.pop_back(); // Delete the last space!
-    return ps;
 }
