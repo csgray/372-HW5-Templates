@@ -39,3 +39,36 @@ void Layered::setCoordinates(vector<shared_ptr<Shape>> shapes) {
     for (auto shape : shapes )
         shape->setCursor(startShape->getLocX(), startShape->getLocY());
 };
+
+
+void VerticalShape::setHeightWidth(vector<shared_ptr<Shape>> shapes) {
+    for (auto shape : shapes ) {
+        setHeight(getHeight() + shape->getHeight());
+        if (getWidth() < shape->getWidth())
+            setWidth(shape->getWidth());
+    }
+};
+
+void VerticalShape::setCoordinates(vector<shared_ptr<Shape>> shapes) {
+    for (std::size_t i = 1; i != shapes.size(); i++) { // Iterators didn't work so we're doing indices
+        auto shape = shapes[i];
+        auto prevShape = shapes[i-1];
+        shape->setCursor( prevShape->getLocX() , (prevShape->getLocY() + ((prevShape->getHeight())/2) + (shape->getHeight()/2) ) );
+    }
+};
+
+void HorizontalShape::setHeightWidth(vector<shared_ptr<Shape>> shapes) {
+    for (auto shape : shapes) {
+        if (getHeight() < shape->getHeight())
+            setHeight(shape->getHeight());
+        setWidth(getWidth() + shape->getWidth());
+    }
+};
+
+void HorizontalShape::setCoordinates(vector<shared_ptr<Shape>> shapes) {
+    for (std::size_t i = 1; i != shapes.size(); i++) { // Iterators didn't work so we're doing indices
+        auto shape = shapes[i];
+        auto prevShape = shapes[i-1];
+        shape->setCursor( (prevShape->getLocX() + ((prevShape->getWidth())/2) + (shape->getWidth()/2) ), prevShape->getLocY() );
+    }
+};

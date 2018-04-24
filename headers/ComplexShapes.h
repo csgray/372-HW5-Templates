@@ -26,7 +26,7 @@ public:
         shapes.push_back(shape);
     }
 
-    string getPostScript() {
+    string getPostscript() override final {
         setHeightWidth(shapes);
         setCoordinates(shapes);
         string postScript = outputPostScript();
@@ -98,52 +98,24 @@ class Layered : public ComplexShape {
 private:
     void setHeightWidth(vector<shared_ptr<Shape>> shapes) override;
     void setCoordinates(vector<shared_ptr<Shape>> shapes) override;
+public:
+    using ComplexShape::ComplexShape;
 };
 
 class VerticalShape : public ComplexShape {
+private:
+    void setHeightWidth(vector<shared_ptr<Shape>> shapes) override;
+    void setCoordinates(vector<shared_ptr<Shape>> shapes) override;
 public:
-    VerticalShape(initializer_list<shared_ptr<Shape>> list) {
-        // Populate vector
-        for (auto shape : list)
-            shapes.push_back(shape);
-        
-        // Set height and width
-        for (auto shape : shapes ) {
-            setHeight(getHeight() + shape->getHeight());
-            if (getWidth() < shape->getWidth())
-                setWidth(shape->getWidth());
-        };
-
-        // Set coordinates for bounding boxes
-        for (std::size_t i = 1; i != shapes.size(); i++) { // Iterators didn't work so we're doing indices
-            auto shape = shapes[i];
-            auto prevShape = shapes[i-1];
-            shape->setCursor( prevShape->getLocX() , (prevShape->getLocY() + ((prevShape->getHeight())/2) + (shape->getHeight()/2) ) );
-        };
-    }
+    using ComplexShape::ComplexShape;
 };
 
 class HorizontalShape : public ComplexShape {
+private:
+    void setHeightWidth(vector<shared_ptr<Shape>> shapes) override;
+    void setCoordinates(vector<shared_ptr<Shape>> shapes) override;
 public:
-    HorizontalShape(initializer_list<shared_ptr<Shape>> list) {
-        // Populate vector
-        for (auto shape : list)
-            shapes.push_back(shape);
-
-        // Set height and width
-        for (auto shape : shapes) {
-            if (getHeight() < shape->getHeight())
-                setHeight(shape->getHeight());
-            setWidth(getWidth() + shape->getWidth());
-        }
-
-        // Set coordinates for bounding boxes
-        for (std::size_t i = 1; i != shapes.size(); i++) { // Iterators didn't work so we're doing indices
-            auto shape = shapes[i];
-            auto prevShape = shapes[i-1];
-            shape->setCursor( (prevShape->getLocX() + ((prevShape->getWidth())/2) + (shape->getWidth()/2) ), prevShape->getLocY() );
-        };
-    }
+    using ComplexShape::ComplexShape;
 };
 
 #endif

@@ -228,7 +228,7 @@ TEST_CASE( "Compound Shape - Layered Shapes: Triangle Square Circle") {
     triangle->setCursor(10,10);
     shared_ptr<Shape> layered(new Layered( {circle, square, triangle} ));
 
-    SECTION("Constructor") {    
+/*     SECTION("Constructor") {    
 
         REQUIRE(circle->getLocY() == 15);
         REQUIRE(circle->getLocX() == 15);
@@ -242,7 +242,7 @@ TEST_CASE( "Compound Shape - Layered Shapes: Triangle Square Circle") {
         REQUIRE( square->getLocY() == circle->getLocY());
         REQUIRE( square->getLocX() == square->getLocY());
         
-    }
+    } */
 
     SECTION("PostScript") {
          REQUIRE(layered->getPostscript()=="gsave 15 15 translate 0 0 15 0 360 arc stroke grestore gsave 15 15 translate /W 10 def /H 10 def newpath W neg H neg moveto W H neg lineto W H lineto W neg H lineto closepath stroke grestore gsave 15 15 translate /W 5 def /H 5 def newpath W neg H neg moveto W H neg lineto 0 H lineto closepath stroke grestore");
@@ -258,7 +258,7 @@ TEST_CASE( "Compound Shape - Vertical Shapes: Circle Square Triangle") {
     triangle->setCursor(10,10);
     shared_ptr<Shape> vertical(new VerticalShape( {circle, square, triangle} ));
 
-    SECTION("Constructor") {    
+/*     SECTION("Constructor") {    
         // The height of the resulting shape's bounding box is the sum of the heights of the component shapes.
         REQUIRE( vertical->getHeight() == triangle->getHeight() + square->getHeight() + circle->getHeight() ); // This should be 60.
         // The width of the resulting shape's bounding box is the maximum width of the widths of the component shapes.
@@ -269,7 +269,7 @@ TEST_CASE( "Compound Shape - Vertical Shapes: Circle Square Triangle") {
         // and both bounding boxes are vertically aligned around their center.
         REQUIRE( triangle->getLocX() == square->getLocX() );
         REQUIRE( square->getLocX() == circle->getLocX() );
-    }
+    } */
 
     SECTION("PostScript") {
         REQUIRE(vertical->getPostscript()=="gsave 15 15 translate 0 0 15 0 360 arc stroke grestore gsave 15 40 translate /W 10 def /H 10 def newpath W neg H neg moveto W H neg lineto W H lineto W neg H lineto closepath stroke grestore gsave 15 55 translate /W 5 def /H 5 def newpath W neg H neg moveto W H neg lineto 0 H lineto closepath stroke grestore");
@@ -285,7 +285,7 @@ TEST_CASE( "Compound Shape - Horizontal Shapes: Triangle Square Circle") {
     circle->setCursor(15,15);
     shared_ptr<Shape> horizontal(new HorizontalShape( {triangle, square, circle} ));
 
-    SECTION("Constructor") {    
+/*     SECTION("Constructor") {    
         // The height of the resulting shape's bounding box is the maximum height of the heights of the component shapes.
         REQUIRE( horizontal->getHeight() == max( max(triangle->getHeight(), square->getHeight()), circle->getHeight() ) );
         // The width of the resulting shape's bounding box is the sum of the widths of the component shapes.
@@ -296,7 +296,7 @@ TEST_CASE( "Compound Shape - Horizontal Shapes: Triangle Square Circle") {
         // and both bounding boxes are horizontally aligned around their center.
         REQUIRE( circle->getLocY() == square->getLocY() );
         REQUIRE( square->getLocY() == triangle->getLocY() );
-    }
+    } */
 
     SECTION("PostScript") {
     REQUIRE(horizontal->getPostscript()=="gsave 15 15 translate /W 5 def /H 5 def newpath W neg H neg moveto W H neg lineto 0 H lineto closepath stroke grestore gsave 30 15 translate /W 10 def /H 10 def newpath W neg H neg moveto W H neg lineto W H lineto W neg H lineto closepath stroke grestore gsave 55 15 translate 0 0 15 0 360 arc stroke grestore");
